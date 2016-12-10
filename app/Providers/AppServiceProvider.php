@@ -7,33 +7,31 @@ use App\Menular;
 
 class AppServiceProvider extends ServiceProvider
 {
-
     /**
-     * Split menu based on level
+     * Splitting menu by level.
      *
-     * @param array $rawData Raw menu data from database
      * @return array
      */
-    private function splitMenu($rawData)
+    private function split($menudata)
     {
         $splitted = array(
-            '1' => array(),
-            '2' => array(),
-            '3' => array()
+            'level1' => array(),
+            'level2' => array(),
+            'level3' => array()
         );
 
-        foreach ($rawData as $menu) {
-            if ($menu->level == '1')
+        foreach ($menudata as $menu) {
+            if ($menu->level == '1') 
             {
-                array_push($splitted['1'], $menu);
+                array_push($splitted['level1'], $menu);
             }
-            elseif($menu->level == '2')
+            elseif ($menu->level == '2')
             {
-                array_push($splitted['2'], $menu);
+                array_push($splitted['level2'], $menu);
             }
             else
             {
-                array_push($splitted['3'], $menu);
+                array_push($splitted['level3'], $menu);
             }
         }
 
@@ -41,38 +39,33 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Install splitted data based on their level
+     * Mark parent menu which has a child
      *
-     * @param array $splittedData Splitted menu data
      * @return array
      */
-    private function installOnParent($splittedData)
+    private function mark($splitted)
     {
-        $menuList = $splittedData['1'];
+        foreach ($splitted['level2'] as $level2) {
+            if ($level2->parent_id) {
+                foreach ($splitted['level1'] as &$level1) {
+                    if ($level1->id == $level2->parent_id) {
+                        $level1['has_child'] = TRUE;
+                    }
+                }
+            }
+        }
 
-        // Install from level 2 on level 1
-        // foreach ($splittedData['2'] as $menuLevel2) {
-        //     foreach ($menuList as $menuLevel1) {
-        //         if ($menuLevel2->parent_id == $menuLevel1->id)
-        //         {   
-        //             $menuLevel1['level_2'] = array();
-        //             array_push($menuLevel1['level_2'], $menuLevel2);
-        //         }
-        //     }   
-        // }
+        foreach ($splitted['level3'] as $level3) {
+            if ($level3->parent_id) {
+                foreach ($splitted['level2'] as &$level2) {
+                    if ($level2->id == $level3->parent_id) {
+                        $level2['has_child'] = TRUE;
+                    }
+                }
+            }
+        }
 
-        // Install from level 3 on level 2
-        // foreach ($splittedData['3'] as $menuLevel3) {
-        //     foreach ($menuList['level_2'] as $menuLevel2) {
-        //         if ($menuLevel3->parent_id == $menuLevel2->id)
-        //         {
-        //             $menuLevel2['level_3'] = array();
-        //             array_push($menuLevel2['level_3'], $menuLevel3);
-        //         }
-        //     }   
-        // }
-
-        return $menuList;
+        return $splitted;
     }
 
     /**
@@ -82,13 +75,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Ordering menu data
-        // $splitted = $this->splitMenu(Menular::all());
-        // $menular = $this->installOnParent($splitted);
+        $split   = $this->split(Menular::all());
+        $menu    = $this->mark($split);
 
-        $menular = Menular::all();
-
-        view()->share('menular', $menular);
+        view()->share('menu', $menu);
+        view()->share('exp', $menu);
     }
 
     /**

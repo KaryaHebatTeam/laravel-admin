@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/admin/dashboard', 'AdminController@dashboard');
+Route::get('/admin', 'AdminController@dashboard');
 Route::get('/admin/settings', 'AdminController@settings');
 Route::get('/admin/edit-profile', 'AdminController@editProfile');
