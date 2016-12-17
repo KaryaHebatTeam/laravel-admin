@@ -16,7 +16,7 @@ class MenularTableSeeder extends Seeder
 	        array(
 	        	'id'			=> 1,
 	            'name' 			=> 'Dashboard',
-	            'url'			=> '/dashboard',
+	            'url'			=> '/admin',
 	            'icon_class' 	=> 'fa fa-home',
 	            'level'		 	=> '1',
 	            'parent_id'		=> NULL
@@ -24,7 +24,7 @@ class MenularTableSeeder extends Seeder
 	        array(
 	        	'id'			=> 2,
 	            'name' 			=> 'Settings',
-	            'url'			=> '/settings',
+	            'url'			=> '/admin/settings',
 	            'icon_class' 	=> 'fa fa-gear',
 	            'level'		 	=> '1',
 	            'parent_id'		=> NULL
@@ -32,7 +32,7 @@ class MenularTableSeeder extends Seeder
 	        array(
 	        	'id'			=> 3,
 	            'name' 			=> 'Edit Profile',
-	            'url'			=> '/edit-profile',
+	            'url'			=> '/admin/edit-profile',
 	            'icon_class' 	=> 'fa fa-user',
 	            'level'		 	=> '1',
 	            'parent_id'		=> NULL

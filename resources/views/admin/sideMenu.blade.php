@@ -17,7 +17,7 @@
 					          	@foreach($menu['level3'] as $level3)
 									@if ($level3->parent_id == $level2->id)
 						            	
-						            	<li class="sub_menu"><a href="level2.html">{{ $level3->name }}</a></li>
+						            	<li class="sub_menu"><a href="{{ $level3->url }}">{{ $level3->name }}</a></li>
 						            
 						            @endif
 								@endforeach
@@ -27,7 +27,7 @@
 					    
 					    @else
 
-					    	<li class="sub_menu"><a href="#">{{ $level2->name }}</a></li>
+					    	<li class="sub_menu"><a href="{{ $level2->url }}">{{ $level2->name }}</a></li>
 					    
 					    @endif
 			        @endif
@@ -38,7 +38,7 @@
 
 		@else
 
-			<li class="sub_menu"><a href="#">{{ $level1->name }}</a></li>
+			<li class="sub_menu"><a href="{{ $level1->url }}">{{ $level1->name }}</a></li>
 		
 		@endif
 	  @endforeach
