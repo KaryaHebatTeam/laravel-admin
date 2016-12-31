@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Providers;
+namespace Greatworks\Menular;
 
 use Illuminate\Support\ServiceProvider;
-use App\Menular;
 
-class AppServiceProvider extends ServiceProvider
+class MenularServiceProvider extends ServiceProvider
 {
     /**
      * Splitting menu by level.
@@ -44,7 +43,8 @@ class AppServiceProvider extends ServiceProvider
      * @return array
      */
     private function mark($splitted)
-    {
+    { 
+        // Install level2 (child) to level1 (parent)
         foreach ($splitted['level2'] as $level2) {
             if ($level2->parent_id) {
                 foreach ($splitted['level1'] as &$level1) {
@@ -55,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
+        // Install level3 (child) to level2 (parent)
         foreach ($splitted['level3'] as $level3) {
             if ($level3->parent_id) {
                 foreach ($splitted['level2'] as &$level2) {
@@ -69,25 +70,28 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap the application services.
      *
      * @return void
      */
     public function boot()
     {
-        $split   = $this->split(Menular::all());
-        $menu    = $this->mark($split);
+        include __DIR__.'/routes.php';
 
-        view()->share('menu', $menu);
+        $split   = $this->split(Menular::all());
+        $menular = $this->mark($split);
+
+        view()->share('menular', $menular);
     }
 
     /**
-     * Register any application services.
+     * Register the application services.
      *
      * @return void
      */
     public function register()
     {
-        //
+        $this->app->make('Greatworks\Menular\MenularGentelellaController');
+        $this->loadViewsFrom(__DIR__.'/views', 'menular');
     }
 }

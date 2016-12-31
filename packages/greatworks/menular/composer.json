@@ -1,0 +1,13 @@
+{
+    "name": "greatworks/menular",
+    "description": "Fast to create menu navigation",
+    "authors": [
+        {
+            "name": "Greatworks",
+            "email": "team.karyahebat@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {}
+}
