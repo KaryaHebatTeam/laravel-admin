@@ -76,7 +76,9 @@ class MenularServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        include __DIR__.'/routes.php';
+        $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
+        $this->loadViewsFrom(__DIR__.'/views', 'menular');
 
         $split   = $this->split(Menular::all());
         $menular = $this->mark($split);
@@ -91,7 +93,6 @@ class MenularServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make('Greatworks\Menular\MenularGentelellaController');
-        $this->loadViewsFrom(__DIR__.'/views', 'menular');
+        
     }
 }
